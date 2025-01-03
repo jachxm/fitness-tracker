@@ -122,9 +122,9 @@ function saveExercise(exerciseName, sets) {
   title.textContent = exerciseName;
 
   const titleDiv = document.createElement("div")
-  titleDiv.classList.add('outer-div');
-  titleDiv.appendChild(title);
-  titleDiv.appendChild(deleteButton);
+  titleDiv.classList.add ('outer-div')
+  titleDiv.appendChild(title)
+  titleDiv.appendChild(deleteButton)
 
   listItem.appendChild(titleDiv); // Přidáme název cvičení do odrážky
 
@@ -138,11 +138,9 @@ function saveExercise(exerciseName, sets) {
   // Přidáme odrážku (li) do seznamu (ul)
   workoutList.appendChild(listItem);
 
-  // Zvyšte exerciseCounter pro další cvičení
   exerciseCounter++;
+
 
   // Reset formuláře
   document.getElementById('exercise-name').value = '';  // Vyprázdníme pole pro název cvičení
 }
-
-
