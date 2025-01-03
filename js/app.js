@@ -82,9 +82,9 @@ document.getElementById('add-set').addEventListener('click', function () {
         return null;
       }
 
+      if (!saveExercise(exerciseName, sets)){return null}
       console.log('Cvik:', exerciseName);
       console.log('Série:', sets);
-      saveExercise(exerciseName, sets);
     });
 
     document.getElementById('workout-form').appendChild(addWorkout);
@@ -146,4 +146,5 @@ function saveExercise(exerciseName, sets) {
 
   // Reset formuláře
   document.getElementById('exercise-name').value = '';  // Vyprázdníme pole pro název cvičení
+  return true;
 }
