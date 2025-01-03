@@ -1,7 +1,7 @@
 let counter = 1;
 
 document.getElementById('save-excercise').addEventListener('click', function (){
-  console.log('curaku');
+  alert('nemas zadnou serii');
 })
 
 document.getElementById('add-set').addEventListener('click', function () {
@@ -51,18 +51,39 @@ document.getElementById('add-set').addEventListener('click', function () {
     addWorkout.textContent = 'Uložit cvik';
 
     addWorkout.addEventListener('click', function () {
-      const exerciseName = document.getElementById('exercise-name')?.value || 'Neznámý cvik';
+      const exerciseName = document.getElementById('exercise-name')?.value;
       const sets = [];
 
       // Použití for smyčky k iteraci přes jednotlivé sety
-      for (let i = 1; i <= counter; i++) {
+      for (let i = 1; i < counter; i++) {
         const reps = document.getElementById('reps' + i)?.value;
         const weight = document.getElementById('weight' + i)?.value;
 
         if (reps && weight) {
           sets.push({ reps: Number(reps), weight: Number(weight) });
         }
+        else {
+          if (!reps){
+            alert('chybí ti počet opakování na sérii '+ i)
+            return null;
+          }
+          else{
+          alert('chybí ti váha na sérii '+ i)
+          return null;
+          }
+        }
       }
+
+      if (!exerciseName){
+        alert('chybi nazev cviku')
+        return null;
+      }
+
+      if (sets.length < 1){
+        alert('nemas zadnou serii')
+        return null;
+      }
+
 
       console.log('Cvik:', exerciseName);
       console.log('Série:', sets);
@@ -73,3 +94,4 @@ document.getElementById('add-set').addEventListener('click', function () {
 
   counter++;
 });
+
