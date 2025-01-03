@@ -96,11 +96,12 @@ button:hover {
 }
 
 ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
 }
 
 li {
+  list-style-type: none;
   background: #fff;
   margin: 0.5rem 0;
   padding: 0.5rem;
