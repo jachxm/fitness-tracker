@@ -97,7 +97,7 @@ document.getElementById('add-set').addEventListener('click', function () {
 
 function saveExercise(exerciseName, sets) {
   // Zkontrolujeme, jestli už cvičení existuje
-  if (document.getElementById(exerciseName + exerciseCounter)) {
+  if (document.getElementById(exerciseName)) {
     alert(exerciseName + ' si dnes už cvičil!!!');
     return null;
   }
@@ -106,7 +106,8 @@ function saveExercise(exerciseName, sets) {
   const workoutList = document.getElementById('workout-list');
 
   // Vytvoříme nový seznamový prvek (odrážku)
-  const listItem = document.createElement('li'); // Odrážka pro cvičení
+  const listItem = document.createElement('li');// Odrážka pro cvičení
+  listItem.setAttribute('id', exerciseName)
 
   // Vytvoříme tlačítko pro smazání cvičení
   const deleteButton = document.createElement('button');
@@ -137,9 +138,11 @@ function saveExercise(exerciseName, sets) {
 
   // Přidáme odrážku (li) do seznamu (ul)
   workoutList.appendChild(listItem);
+  console.log(exerciseCounter)
 
   exerciseCounter++;
-
+  console.log()
+  console.log(exerciseCounter)
 
   // Reset formuláře
   document.getElementById('exercise-name').value = '';  // Vyprázdníme pole pro název cvičení
