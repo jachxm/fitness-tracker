@@ -107,3 +107,13 @@ li {
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.saved-Excercise {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.center-item {
+  margin: 0 auto;
+}
