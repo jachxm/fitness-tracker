@@ -1,6 +1,6 @@
 let setCounter = 1;
 let exerciseCounter = 1;
-
+let workout =[]
 // Funkce pro přidání setu
 document.getElementById('add-set').addEventListener('click', function () {
   // Odebrání tlačítka "Uložit sérii", pokud existuje
@@ -90,7 +90,16 @@ document.getElementById('add-set').addEventListener('click', function () {
         return;
       }
 
-      if (!saveExercise(exerciseName, sets)) return;
+      const currentDate = new Date()
+
+      let date = currentDate.getDate()+ '.' +currentDate.getMonth() + 1 + '.' +currentDate.getFullYear();
+      sets.unshift({name: exerciseName, date: date});
+
+      if (!saveExercise(sets)) return;
+
+      workout.push(sets)
+      console.log(sets)
+      console.log(workout)
     });
 
 
@@ -100,7 +109,9 @@ document.getElementById('add-set').addEventListener('click', function () {
   setCounter++; // Zvyšte counter po přidání nové série
 });
 
-function saveExercise(exerciseName, sets) {
+function saveExercise( sets) {
+  const exerciseName = sets[0].name;
+
   // Zkontrolujeme, jestli už cvičení existuje
   if (document.getElementById(exerciseName)) {
     alert(exerciseName + ' si dnes už cvičil!!!');
@@ -120,6 +131,11 @@ function saveExercise(exerciseName, sets) {
   deleteButton.setAttribute('type', 'button');
   deleteButton.classList.add('delete-button');
   deleteButton.addEventListener('click', function () {
+    workout.forEach((excercise, index) => {
+      if (excercise[0].name === exerciseName){
+        workout.splice(index, 1)
+        console.log(workout);}
+    })
     listItem.remove(); // Odstraní celý seznamový prvek (li) po kliknutí na tlačítko
   });
 
@@ -136,6 +152,7 @@ function saveExercise(exerciseName, sets) {
 
   // Přidáme jednotlivé sety jako odstavce
   sets.forEach((set, index) => {
+    if (index === 0) {return}
     const setDetails = document.createElement('p');
     setDetails.textContent = `Série ${index + 1}: Opakování - ${set.reps}, Váha - ${set.weight} kg`;
     listItem.appendChild(setDetails);
