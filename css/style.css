@@ -29,7 +29,8 @@ input, button {
   display: block;
   box-sizing: border-box;
   margin: 0.75rem 0 0;
-
+  border-radius: 10px;
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);
 }
 
 .outer-div {
@@ -79,6 +80,7 @@ input, button {
 .delete-button:hover {
   background-color: #c82333;
   border: 2px solid black;
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.4);
 
 }
 
@@ -92,28 +94,22 @@ button {
 button:hover {
   background-color: #0056b3;
   border: 1px solid black;
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.4);
 
 }
 
 ul {
-  list-style: none;
+  list-style-type: none;
   padding: 0;
 }
 
 li {
+  list-style-type: none;
   background: #fff;
   margin: 0.5rem 0;
   padding: 0.5rem;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.2);
 }
 
-.saved-Excercise {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.center-item {
-  margin: 0 auto;
-}
