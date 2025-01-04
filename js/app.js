@@ -30,7 +30,6 @@ document.getElementById('add-set').addEventListener('click', function () {
 
   deleteButton.addEventListener('click', function () {
     outerGroup.remove();
-    setCounter--; // Snížení counteru, pokud dojde k odstranění setu
   });
 
   inputGroup.appendChild(repsInput);
@@ -51,49 +50,55 @@ document.getElementById('add-set').addEventListener('click', function () {
     addWorkout.addEventListener('click', function () {
       const exerciseName = document.getElementById('exercise-name')?.value;
       const sets = [];
+      let hasError = false; // Flag pro kontrolu chyby
 
-      // Použití for smyčky k iteraci přes jednotlivé sety
-      for (let i = 1; i < setCounter; i++) {
-        const reps = document.getElementById('reps' + i)?.value;
-        const weight = document.getElementById('weight' + i)?.value;
+      // Iterujeme přes všechny existující prvky s ID začínajícími na "reps"
+      const setElements = document.querySelectorAll('[id^="reps"]');
+      setElements.forEach((repsInput) => {
+        if (hasError) return; // Pokud už byla chyba, ukončíme další kontrolu
 
-        if (reps && weight) {
-          sets.push({ reps: Number(reps), weight: Number(weight) });
+        const id = repsInput.id.replace('reps', '');
+        const weightInput = document.getElementById('weight' + id);
+
+        const reps = repsInput.value;
+        const weight = weightInput?.value;
+
+        if (!reps) {
+          alert('Chybí ti počet opakování na sérii ' + id);
+          hasError = true; // Nastavíme chybu, aby se zabránilo dalšímu alertu
+          return;
         }
-        else {
-          if (!reps){
-            alert('Chybí ti počet opakování na sérii ' + i);
-            return null;
-          }
-          else{
-            alert('Chybí ti váha na sérii ' + i);
-            return null;
-          }
-        }
-      }
 
-      if (!exerciseName){
+        if (!weight) {
+          alert('Chybí ti váha na sérii ' + id);
+          hasError = true;
+          return;
+        }
+
+        sets.push({ reps: Number(reps), weight: Number(weight) });
+      });
+
+      if (hasError) return; // Pokud nastala chyba, ukončíme funkci
+
+      if (!exerciseName) {
         alert('Chybí název cvičení');
-        return null;
+        return; // Ukončíme funkci, pokud chybí název cvičení
       }
 
-      if (sets.length < 1){
+      if (sets.length < 1) {
         alert('Nemáš žádnou sérii');
-        return null;
+        return;
       }
 
-      if (!saveExercise(exerciseName, sets)){return null}
-      console.log('Cvik:', exerciseName);
-      console.log('Série:', sets);
+      if (!saveExercise(exerciseName, sets)) return;
     });
+
 
     document.getElementById('workout-form').appendChild(addWorkout);
   }
 
   setCounter++; // Zvyšte counter po přidání nové série
 });
-
-
 
 function saveExercise(exerciseName, sets) {
   // Zkontrolujeme, jestli už cvičení existuje
@@ -106,15 +111,15 @@ function saveExercise(exerciseName, sets) {
   const workoutList = document.getElementById('workout-list');
 
   // Vytvoříme nový seznamový prvek (odrážku)
-  const listItem = document.createElement('li');// Odrážka pro cvičení
-  listItem.setAttribute('id', exerciseName)
+  const listItem = document.createElement('li');
+  listItem.setAttribute('id', exerciseName);
 
   // Vytvoříme tlačítko pro smazání cvičení
   const deleteButton = document.createElement('button');
   deleteButton.textContent = '-';
   deleteButton.setAttribute('type', 'button');
   deleteButton.classList.add('delete-button');
-  deleteButton.addEventListener("click", function () {
+  deleteButton.addEventListener('click', function () {
     listItem.remove(); // Odstraní celý seznamový prvek (li) po kliknutí na tlačítko
   });
 
@@ -122,29 +127,23 @@ function saveExercise(exerciseName, sets) {
   const title = document.createElement('h3');
   title.textContent = exerciseName;
 
-  const titleDiv = document.createElement("div")
-  titleDiv.classList.add ('outer-div')
-  titleDiv.appendChild(title)
-  titleDiv.appendChild(deleteButton)
+  const titleDiv = document.createElement('div');
+  titleDiv.classList.add('outer-div');
+  titleDiv.appendChild(title);
+  titleDiv.appendChild(deleteButton);
 
-  listItem.appendChild(titleDiv); // Přidáme název cvičení do odrážky
+  listItem.appendChild(titleDiv);
 
   // Přidáme jednotlivé sety jako odstavce
   sets.forEach((set, index) => {
     const setDetails = document.createElement('p');
     setDetails.textContent = `Série ${index + 1}: Opakování - ${set.reps}, Váha - ${set.weight} kg`;
-    listItem.appendChild(setDetails); // Přidáme detaily setu
+    listItem.appendChild(setDetails);
   });
 
-  // Přidáme odrážku (li) do seznamu (ul)
   workoutList.appendChild(listItem);
-  console.log(exerciseCounter)
 
   exerciseCounter++;
-  console.log()
-  console.log(exerciseCounter)
-
-  // Reset formuláře
-  document.getElementById('exercise-name').value = '';  // Vyprázdníme pole pro název cvičení
+  document.getElementById('exercise-name').value = '';
   return true;
 }
