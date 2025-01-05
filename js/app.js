@@ -1,6 +1,6 @@
 let setCounter = 1;
 let workout =[]
-import { ahoj } from '/js/editExcercise.js'
+import { editExcercise } from '/js/editExcercise.js'
 // Funkce pro přidání setu
 document.getElementById('add-set').addEventListener('click', function () {
   // Odebrání tlačítka "Uložit sérii", pokud existuje
@@ -113,7 +113,6 @@ document.getElementById('add-set').addEventListener('click', function () {
 
 function saveExercise(excercise) {
   const exerciseName = excercise.name;
-  ahoj()
   // Zkontrolujeme, jestli už cvičení existuje
   if (document.getElementById(exerciseName)) {
     alert(exerciseName + ' si dnes už cvičil!!!');
@@ -151,6 +150,27 @@ function saveExercise(excercise) {
   const editButton = document.createElement('button');
   editButton.classList.add('edit-button')
   editButton.textContent = '✏️'
+  editButton.addEventListener('click', function () {
+    if (editButton.textContent === '✏️') {
+      editButton.textContent = '✔️';
+      editButton.style.backgroundColor = '#90EE90';
+
+      // Odstranění všech existujících setů při editaci
+      excercise.session.forEach((set, index) => {
+        const setElement = document.getElementById('savedSet' + index);
+        if (setElement) {
+          setElement.remove();
+      }})
+
+
+    }
+
+
+
+     else {
+      editButton.textContent = '✏️';
+      editButton.style.backgroundColor = 'white';
+    }})
 
   const buttonGroup = document.createElement('div')
   buttonGroup.classList.add('button-container')
@@ -169,6 +189,7 @@ function saveExercise(excercise) {
   // Přidáme jednotlivé sety jako odstavce
   excercise.session.forEach((set, index) => {
     const setDetails = document.createElement('p');
+    setDetails.setAttribute('id', 'savedSet' + index)
     setDetails.textContent = `Série ${index + 1}: Opakování - ${set.reps}, Váha - ${set.weight} kg`;
     listItem.appendChild(setDetails);
   });

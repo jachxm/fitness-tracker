@@ -1,3 +1,3 @@
-export function ahoj() {
-  console.log('curaku')
+export function editExcercise() {
+
 }
