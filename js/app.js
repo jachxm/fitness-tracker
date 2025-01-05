@@ -91,9 +91,11 @@ document.getElementById('add-set').addEventListener('click', function () {
       }
 
       const currentDate = new Date()
+      let day = currentDate.getDate();
+      let month = currentDate.getMonth() + 1;
+      let year = currentDate.getFullYear()
 
-      let date = currentDate.getDate()+ '.' +currentDate.getMonth() + 1 + '.' +currentDate.getFullYear();
-      let excercise = {
+      let date = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;      let excercise = {
         name: exerciseName,
         date: date,
         session: sets
