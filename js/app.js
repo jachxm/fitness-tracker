@@ -1,6 +1,6 @@
 let setCounter = 1;
-let exerciseCounter = 1;
 let workout =[]
+import { ahoj } from '/js/editExcercise.js'
 // Funkce pro přidání setu
 document.getElementById('add-set').addEventListener('click', function () {
   // Odebrání tlačítka "Uložit sérii", pokud existuje
@@ -9,7 +9,6 @@ document.getElementById('add-set').addEventListener('click', function () {
   const outerGroup = document.createElement('div');
   outerGroup.classList.add('outer-div');
   outerGroup.setAttribute('id', 'set' + setCounter);
-
   const inputGroup = document.createElement('div');
   inputGroup.classList.add('input-group');
 
@@ -17,14 +16,17 @@ document.getElementById('add-set').addEventListener('click', function () {
   repsInput.setAttribute('type', 'number');
   repsInput.setAttribute('placeholder', 'Počet opakování');
   repsInput.setAttribute('id', 'reps' + setCounter);
+  repsInput.style.width = '180px'
+
 
   const weightInput = document.createElement('input');
   weightInput.setAttribute('type', 'number');
   weightInput.setAttribute('placeholder', 'Váha');
   weightInput.setAttribute('id', 'weight' + setCounter);
+  weightInput.style.width = '180px'
 
   const deleteButton = document.createElement('button');
-  deleteButton.textContent = '-';
+  deleteButton.textContent = '❌';
   deleteButton.setAttribute('type', 'button');
   deleteButton.classList.add('delete-button');
 
@@ -90,20 +92,15 @@ document.getElementById('add-set').addEventListener('click', function () {
         return;
       }
 
-      const currentDate = new Date()
-      let day = currentDate.getDate();
-      let month = currentDate.getMonth() + 1;
-      let year = currentDate.getFullYear()
-
-      let date = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;      let excercise = {
+      let excercise = {
         name: exerciseName,
-        date: date,
         session: sets
       };
 
       if (!saveExercise(excercise)) return;
 
       workout.push(excercise)
+      console.log('workout')
       console.log(workout)
     });
 
@@ -116,7 +113,7 @@ document.getElementById('add-set').addEventListener('click', function () {
 
 function saveExercise(excercise) {
   const exerciseName = excercise.name;
-
+  ahoj()
   // Zkontrolujeme, jestli už cvičení existuje
   if (document.getElementById(exerciseName)) {
     alert(exerciseName + ' si dnes už cvičil!!!');
@@ -129,12 +126,14 @@ function saveExercise(excercise) {
   // Vytvoříme nový seznamový prvek (odrážku)
   const listItem = document.createElement('li');
   listItem.setAttribute('id', exerciseName);
+  listItem.style.width = '450px'
 
   // Vytvoříme tlačítko pro smazání cvičení
   const deleteButton = document.createElement('button');
-  deleteButton.textContent = '-';
+  deleteButton.textContent = '❌';
   deleteButton.setAttribute('type', 'button');
   deleteButton.classList.add('delete-button');
+  deleteButton.style.marginTop = '0'
   deleteButton.addEventListener('click', function () {
     workout.forEach((exercise, index) => {
       if (exercise.name === exerciseName){
@@ -149,10 +148,21 @@ function saveExercise(excercise) {
   const title = document.createElement('h3');
   title.textContent = exerciseName;
 
+  const editButton = document.createElement('button');
+  editButton.classList.add('edit-button')
+  editButton.textContent = '✏️'
+
+  const buttonGroup = document.createElement('div')
+  buttonGroup.classList.add('button-container')
+
+  buttonGroup.appendChild(editButton);
+  buttonGroup.appendChild(deleteButton);
+
   const titleDiv = document.createElement('div');
   titleDiv.classList.add('outer-div');
+  titleDiv.style.width = '440px'
   titleDiv.appendChild(title);
-  titleDiv.appendChild(deleteButton);
+  titleDiv.appendChild(buttonGroup);
 
   listItem.appendChild(titleDiv);
   console.log(excercise)
@@ -165,7 +175,23 @@ function saveExercise(excercise) {
 
   workoutList.appendChild(listItem);
 
-  exerciseCounter++;
   document.getElementById('exercise-name').value = '';
+
+  saveWorkout();
   return true;
+}
+
+function saveWorkout(){
+  const currentDate = new Date()
+  let day = currentDate.getDate();
+  let month = currentDate.getMonth() + 1;
+  let year = currentDate.getFullYear()
+  let date = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
+  let newWorkout = {
+    date: date,
+    excercise: workout
+  };
+  console.log('curaku')
+
+  console.log(newWorkout)
 }
