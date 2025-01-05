@@ -93,12 +93,15 @@ document.getElementById('add-set').addEventListener('click', function () {
       const currentDate = new Date()
 
       let date = currentDate.getDate()+ '.' +currentDate.getMonth() + 1 + '.' +currentDate.getFullYear();
-      sets.unshift({name: exerciseName, date: date});
+      let excercise = {
+        name: exerciseName,
+        date: date,
+        session: sets
+      };
 
-      if (!saveExercise(sets)) return;
+      if (!saveExercise(excercise)) return;
 
-      workout.push(sets)
-      console.log(sets)
+      workout.push(excercise)
       console.log(workout)
     });
 
@@ -109,8 +112,8 @@ document.getElementById('add-set').addEventListener('click', function () {
   setCounter++; // Zvyšte counter po přidání nové série
 });
 
-function saveExercise( sets) {
-  const exerciseName = sets[0].name;
+function saveExercise(excercise) {
+  const exerciseName = excercise.name;
 
   // Zkontrolujeme, jestli už cvičení existuje
   if (document.getElementById(exerciseName)) {
@@ -131,10 +134,11 @@ function saveExercise( sets) {
   deleteButton.setAttribute('type', 'button');
   deleteButton.classList.add('delete-button');
   deleteButton.addEventListener('click', function () {
-    workout.forEach((excercise, index) => {
-      if (excercise[0].name === exerciseName){
+    workout.forEach((exercise, index) => {
+      if (exercise.name === exerciseName){
         workout.splice(index, 1)
-        console.log(workout);}
+        console.log('po smazani: ' + JSON.stringify(workout));}
+        console.log(JSON.parse(JSON.stringify(workout)))
     })
     listItem.remove(); // Odstraní celý seznamový prvek (li) po kliknutí na tlačítko
   });
@@ -149,10 +153,9 @@ function saveExercise( sets) {
   titleDiv.appendChild(deleteButton);
 
   listItem.appendChild(titleDiv);
-
+  console.log(excercise)
   // Přidáme jednotlivé sety jako odstavce
-  sets.forEach((set, index) => {
-    if (index === 0) {return}
+  excercise.session.forEach((set, index) => {
     const setDetails = document.createElement('p');
     setDetails.textContent = `Série ${index + 1}: Opakování - ${set.reps}, Váha - ${set.weight} kg`;
     listItem.appendChild(setDetails);
