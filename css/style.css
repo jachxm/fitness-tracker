@@ -85,7 +85,6 @@ input, button {
   text-align: center;
   box-sizing: border-box;
   margin-top: 0px;
-
 }
 
 .delete-button {
@@ -99,6 +98,24 @@ input, button {
   cursor: pointer;
   border-radius: 50%;
   border: 2px solid #dc3545;
+  font-size: 1.5rem; /* Upravit velikost dle potřeby */
+  font-weight: bold;
+  line-height: 0.9; /* Tohle může pomoci s lepším zarovnáním */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.save-button {
+  width: 40px;
+  height: 40px;
+  background-color: #fff;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid #fff;
   font-size: 1.5rem; /* Upravit velikost dle potřeby */
   font-weight: bold;
   line-height: 0.9; /* Tohle může pomoci s lepším zarovnáním */
