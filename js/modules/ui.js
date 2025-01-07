@@ -1,4 +1,3 @@
-//metoda pro vytvoření button
 export function getButton(buttonClass, id, text, title) {
   const button = document.createElement('button')
   button.setAttribute('type', 'button')
