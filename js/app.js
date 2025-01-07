@@ -1,4 +1,4 @@
-//pokus git 3
+//pokus git 4
 let setCounter = 1;
 let workout = []
 const currentDate = new Date()
