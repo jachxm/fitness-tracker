@@ -1,24 +1,28 @@
 let setCounter = 1;
-let workout =[]
-import { editExcercise } from '/js/editExcercise.js'
-let newWorkout;
+let workout = []
+const currentDate = new Date()
+import {getButton, getInput, getDiv, getP} from "/js/modules/ui.js";
+
+function getDate() {
+  let day = currentDate.getDate();
+  let month = currentDate.getMonth() + 1;
+  let year = currentDate.getFullYear()
+  let date = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
+  return date;
+}
+
 // Funkce pro přidání setu
 document.getElementById('add-set').addEventListener('click', function () {
   // Odebrání tlačítka "Uložit sérii", pokud existuje
   document.getElementById('save-excercise')?.remove();
 
-
-
   document.getElementById('workout-form').appendChild(createInput());
 
   // Přidání tlačítka "Uložit sérii" jen jednou
   if (!document.getElementById('save-excercise')) {
-    const addWorkout = document.createElement('button');
-    addWorkout.setAttribute('type', 'button');
-    addWorkout.setAttribute('id', 'save-excercise');
-    addWorkout.textContent = 'Uložit cvik';
+    const addWorkoutButton = getButton(null, 'save-excercise', 'Uložit cvik')
 
-    addWorkout.addEventListener('click', function () {
+    addWorkoutButton.addEventListener('click', function () {
       const exerciseName = document.getElementById('exercise-name')?.value;
       const sets = [];
       let hasError = false; // Flag pro kontrolu chyby
@@ -46,7 +50,7 @@ document.getElementById('add-set').addEventListener('click', function () {
           return;
         }
 
-        sets.push({ reps: Number(reps), weight: Number(weight) });
+        sets.push({reps: Number(reps), weight: Number(weight)});
       });
 
       if (hasError) return; // Pokud nastala chyba, ukončíme funkci
@@ -72,10 +76,10 @@ document.getElementById('add-set').addEventListener('click', function () {
     });
 
 
-    document.getElementById('workout-form').appendChild(addWorkout);
+    document.getElementById('workout-form').appendChild(addWorkoutButton);
   }
 
-  setCounter++; // Zvyšte counter po přidání nové série
+  setCounter++;
 });
 
 function saveExercise(excercise) {
@@ -95,15 +99,13 @@ function saveExercise(excercise) {
   listItem.style.width = '450px'
 
   // Vytvoříme tlačítko pro smazání cvičení
-  const deleteButton = document.createElement('button');
-  deleteButton.textContent = '❌';
-  deleteButton.setAttribute('type', 'button');
-  deleteButton.classList.add('delete-button');
+  const deleteButton = getButton('delete-button', null, '❌', 'smazat')
   deleteButton.style.marginTop = '0'
   deleteButton.addEventListener('click', function () {
     workout.forEach((exercise, index) => {
-      if (exercise.name === exerciseName){
-        workout.splice(index, 1);}
+      if (exercise.name === exerciseName) {
+        workout.splice(index, 1);
+      }
     })
     listItem.remove(); // Odstraní celý seznamový prvek (li) po kliknutí na tlačítko
   });
@@ -112,114 +114,94 @@ function saveExercise(excercise) {
   const title = document.createElement('h3');
   title.textContent = exerciseName;
 
-  const editButton = document.createElement('button');
-  editButton.classList.add('edit-button')
-  editButton.textContent = '✏️'
+  const editButton = getButton('edit-button', null, '✏️', 'upravit')
+
   editButton.addEventListener('click', function () {
     if (editButton.textContent === '✏️') {
       editButton.textContent = '✔️';
       editButton.style.backgroundColor = '#90EE90';
-
+      editButton.setAttribute('title', 'Uložit změny')
       // Odstranění všech existujících setů při editaci
       excercise.session.forEach((set, index) => {
-        const setElement = document.getElementById('savedSet' + index);
+        const setElement = document.getElementById(exerciseName + 'savedSet' + index);
         if (setElement) {
           setElement.remove();
-      }})
+        }
+      })
       excercise.session.forEach((set, index) => {
-        const inputGroup = document.createElement('div');
-        inputGroup.classList.add('input-group');
+        const inputGroup = getDiv('input-group')
 
-        const repsInput = document.createElement('input');
-        repsInput.setAttribute('type', 'number');
-        repsInput.setAttribute('id', 'editReps' + index);
-        repsInput.value = set.reps;
-        repsInput.style.width = '170px'
-
-        const weightInput = document.createElement('input');
-        weightInput.setAttribute('type', 'number');
-        weightInput.setAttribute('id', 'editWeight' + index);
-        weightInput.value = set.weight;
-        repsInput.style.width = '170px'
-
-        const outerGroup = document.createElement('div');
-        outerGroup.classList.add('outer-div');
-        outerGroup.setAttribute('id', 'set' + setCounter);
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = '❌';
-        deleteButton.setAttribute('type', 'button');
-        deleteButton.classList.add('delete-button');
-
+        const repsInput = getInput('number', 'počet opakování', 'editReps' + index, '170px', set.reps)
+        const weightInput = getInput('number', 'váha', 'editWeight' + index, '170px', set.weight)
+        const lineGroup = getDiv('outer-div', 'set' + setCounter)
+        const deleteButton = getButton('delete-button', null, '❌')
         deleteButton.addEventListener('click', function () {
-          outerGroup.remove();
+          lineGroup.remove();
         });
 
         inputGroup.appendChild(repsInput);
         inputGroup.appendChild(weightInput);
-        outerGroup.appendChild(inputGroup)
-        outerGroup.appendChild(deleteButton)
-        listItem.appendChild(outerGroup);
+        lineGroup.appendChild(inputGroup)
+        lineGroup.appendChild(deleteButton)
+        listItem.appendChild(lineGroup);
       });
 
-      }
-
-     else {
+    } else {
       editButton.textContent = '✏️';
       editButton.style.backgroundColor = 'white';
+      editButton.setAttribute('title', 'Upravit')
+
 
       const updatedSets = [];
-      excercise.session.forEach((set, index)=> {
+      excercise.session.forEach((set, index) => {
         const reps = document.getElementById('editReps' + index)?.value
         const weight = document.getElementById('editWeight' + index)?.value
 
-        if (reps && weight){
+        if (reps && weight) {
           updatedSets.push({reps: reps, weight: weight})
         }
       });
 
       if (updatedSets.length > 0) {
         excercise.session = updatedSets
-        workout.forEach((excercise, index)=>{
-          if (excercise.name === exerciseName){
-            excercise.session = updatedSets;
-            console.log('upraveny workout')
-            console.log(workout)
-          }}
+        workout.forEach((excercise) => {
+            if (excercise.name === exerciseName) {
+              excercise.session = updatedSets;
+              console.log('upraveny workout')
+              console.log(workout)
+            }
+          }
         )
       }
       listItem.querySelectorAll('.outer-div').forEach((group) => {
-        if(group.id === 'titleDiv') {return}
-          group.remove()});
+        if (group.id === 'titleDiv') {
+          return
+        }
+        group.remove()
+      });
       excercise.session.forEach((set, index) => {
-        const setDetails = document.createElement('p');
-        setDetails.setAttribute('id', 'savedSet' + index)
-        setDetails.textContent = `Série ${index + 1}: Opakování - ${set.reps}, Váha - ${set.weight} kg`;
+        const setDetails = getP(exerciseName + 'savedSet' + index, `Série ${index + 1}: Opakování - ${set.reps}, Váha - ${set.weight} kg`)
         listItem.appendChild(setDetails);
+      })
+    }
+  })
 
-    })}})
-
-  const buttonGroup = document.createElement('div')
-  buttonGroup.classList.add('button-container')
-
+  const buttonGroup = getDiv('button-container')
   buttonGroup.appendChild(editButton);
   buttonGroup.appendChild(deleteButton);
 
-  const titleDiv = document.createElement('div');
-  titleDiv.classList.add('outer-div');
+  const titleDiv = getDiv('outer-div', 'titleDiv')
   titleDiv.style.width = '440px'
-  titleDiv.setAttribute('id', 'titleDiv')
   titleDiv.appendChild(title);
   titleDiv.appendChild(buttonGroup);
 
   listItem.appendChild(titleDiv);
   console.log('cvik nazev a objekty s reps a weight')
   console.log(excercise)
+
   // Přidáme jednotlivé sety jako odstavce
   excercise.session.forEach((set, index) => {
-    const setDetails = document.createElement('p');
-    setDetails.setAttribute('id', 'savedSet' + index)
-    setDetails.textContent = `Série ${index + 1}: Opakování - ${set.reps}, Váha - ${set.weight} kg`;
+    const setDetails = getP(exerciseName + 'savedSet' + index, `Série ${index + 1}: Opakování - ${set.reps}, Váha - ${set.weight} kg`)
     listItem.appendChild(setDetails);
   });
 
@@ -230,60 +212,35 @@ function saveExercise(excercise) {
   return true;
 }
 
+function createInput() {
+  const lineGroup = getDiv('outer-div', 'set' + setCounter)
 
+  const inputGroup = getDiv('input-group')
 
-function saveWorkout(){
-  const currentDate = new Date()
-  let day = currentDate.getDate();
-  let month = currentDate.getMonth() + 1;
-  let year = currentDate.getFullYear()
-  let date = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
-  newWorkout = {
-    date: date,
-    excercise: workout
-  };
+  const repsInput = getInput('number', 'Počet opakování', 'reps' + setCounter, '180px')
+
+  const weightInput = getInput('number', 'Váha', 'weight' + setCounter, '180px')
+
+  const deleteButton = getButton('delete-button', null, '❌', 'smazat')
+  deleteButton.addEventListener('click', function () {
+    lineGroup.remove();
+  });
+
+  inputGroup.appendChild(repsInput);
+  inputGroup.appendChild(weightInput);
+  lineGroup.appendChild(inputGroup);
+  lineGroup.appendChild(deleteButton);
+  return lineGroup;
 }
 
-
-function createInput(){
-const outerGroup = document.createElement('div');
-outerGroup.classList.add('outer-div');
-outerGroup.setAttribute('id', 'set' + setCounter);
-
-const inputGroup = document.createElement('div');
-inputGroup.classList.add('input-group');
-
-const repsInput = document.createElement('input');
-repsInput.setAttribute('type', 'number');
-repsInput.setAttribute('placeholder', 'Počet opakování');
-repsInput.setAttribute('id', 'reps' + setCounter);
-repsInput.style.width = '180px'
-
-
-const weightInput = document.createElement('input');
-weightInput.setAttribute('type', 'number');
-weightInput.setAttribute('placeholder', 'Váha');
-weightInput.setAttribute('id', 'weight' + setCounter);
-weightInput.style.width = '180px'
-
-const deleteButton = document.createElement('button');
-deleteButton.textContent = '❌';
-deleteButton.setAttribute('type', 'button');
-deleteButton.classList.add('delete-button');
-
-deleteButton.addEventListener('click', function () {
-  outerGroup.remove();
-});
-
-inputGroup.appendChild(repsInput);
-inputGroup.appendChild(weightInput);
-
-outerGroup.appendChild(inputGroup);
-outerGroup.appendChild(deleteButton);
-return outerGroup;
-}
-
-document.getElementById('saveWorkout').addEventListener('click', function (){
-  saveWorkout();
-  console.log(newWorkout)
+//uložení cvičení do localStorage
+document.getElementById('saveWorkout').addEventListener('click', function () {
+  if (confirm('Chceš vážně trénink uložit? Zatím není možnost ho zpetně upravit')) {
+    if (localStorage.getItem(getDate())) {
+      alert('dneska si uz cvicil')
+      return
+    }
+    localStorage.setItem(getDate(), JSON.stringify(workout))
+    console.log('workout byl ulozen')
+  }
 })
