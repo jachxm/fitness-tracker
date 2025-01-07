@@ -3,7 +3,7 @@ const allWorkout = [];
 
 document.getElementById('getHistory').addEventListener('click', function ()  {
   getWorkoutHistory()
-
+  insertFakeWorkouts()
 })
 
 function getWorkoutHistory(){
@@ -57,7 +57,7 @@ function showHistory(){
 }
 
 //vlozenych falesnych dat pro test appky
-/*function insertFakeWorkouts() {
+function insertFakeWorkouts() {
   // Vytvoření fiktivních workoutů
   const fakeWorkouts = [
     {
@@ -128,5 +128,5 @@ function showHistory(){
 }
 
 // Zavolání funkce pro vložení falešných workoutů
-insertFakeWorkouts();*/
+insertFakeWorkouts();
 
