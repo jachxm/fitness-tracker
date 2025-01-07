@@ -1,7 +1,7 @@
 let setCounter = 1;
 let workout = []
 const currentDate = new Date()
-import {getButton, getInput, getDiv, getP} from "../js/modules/ui";
+import {getButton, getInput, getDiv, getP} from "modules/ui.js";
 
 function getDate() {
   let day = currentDate.getDate();
