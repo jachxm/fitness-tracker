@@ -1,4 +1,3 @@
-//ahoj github
 let setCounter = 1;
 let workout = []
 const currentDate = new Date()
