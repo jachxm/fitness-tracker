@@ -14,23 +14,12 @@
     <button class="edit-button" title="Zapsání tréninku" onclick="window.location.href='../index.html'">🏋️‍</button>
     <button class="edit-button" title="Historie tréninků" onclick="window.location.href='history.html'">⏳</button>
     <button class="edit-button" title="Vyhledání tréninku podle kalendáře" onclick="window.location.href='calendar.html'">📅</button>
-
   </div>
 </header>
 <main>
-  <section id="workout-history">
-    <div class="outer-div" >
-      <h2>Přidat cvičení</h2>
-      <button class="save-button" id="saveWorkout" title="Uložit trénink do paměti">💾</button>
-    </div>
-    <form>
-      <input type="text" id="exercise-name" placeholder="Název cviku" required>
-      <button type="button" id="add-set">Přidat opakování</button>
-      <button type="button" id="save-excercise">Uložit cvik</button>
-    </form>
-  </section>
-  <section id="workout-list">
-    <h2>Seznam cviků</h2>
+    <section id="workout-list">
+    <h2>Historie cviků</h2>
+      <button class="edit-button" id="getHistory">✔️</button>
     <ul id="list"></ul>
   </section>
 </main>
