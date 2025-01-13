@@ -1,6 +1,6 @@
 import {getButton, getInput, getDiv, getP} from './ui.js';
 
-//procházení všech uložených workoutů
+//vsechny workouty z localStorage
 const allWorkout = [];
 
 // inicializace historie workoutů
@@ -20,11 +20,9 @@ function getWorkoutHistory(){
 
   }
   allWorkout.sort((a, b) => {
-    const dateA = new Date(a.date.split('.').reverse().join('-'));  // převod na format YYYY-MM-DD
-    const dateB = new Date(b.date.split('.').reverse().join('-'));
-
-    // Porovnejte je a seřaďte
-    return dateA - dateB;});
+    const dateA = new Date(a.date);  
+    const dateB = new Date(b.date);
+    return dateB - dateA;});
   showHistory()
 }
 
@@ -32,9 +30,13 @@ function showHistory(){
   const workoutList = document.getElementById('workout-list')
     
   allWorkout.forEach((day) => {
-        //vytvoření nadpisu pro každý den
-        const title = document.createElement('h3')
-        title.textContent = day.date;
+        const title = document.createElement('h3');
+
+        const date = new Date(day.date);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = date.toLocaleDateString('cs-CZ', options);
+
+        title.textContent = formattedDate;
         const deleteButton = getButton('delete-button', null, '❌', 'smazat')
         deleteButton.style.marginTop = '0'
         const editButton = getButton('edit-button', null, '✏️', 'upravit')
@@ -51,10 +53,6 @@ function showHistory(){
           localStorage.removeItem(day.date)
           workoutList.removeChild(listItem)
         }
-      })
-
-      editButton.addEventListener('click', function () {
-        //const elementSet = document.getElementById()
       })
 
       const listItem = document.createElement('li')
@@ -119,10 +117,9 @@ function showHistory(){
 
 //vlozenych falesnych dat pro test appky
 function insertFakeWorkouts() {
-  // Vytvoření fiktivních workoutů
   const fakeWorkouts = [
     {
-      date: "07.01.2025",
+      date: "2025-01-07",
       session: [
         {
           name: "drep",
@@ -141,7 +138,7 @@ function insertFakeWorkouts() {
       ]
     },
     {
-      date: "08.01.2025",
+      date: "2025-01-08",
       session: [
         {
           name: "squat",
@@ -160,7 +157,7 @@ function insertFakeWorkouts() {
       ]
     },
     {
-      date: "09.01.2025",
+      date: "2025-01-09",
       session: [
         {
           name: "pull-up",
@@ -187,4 +184,3 @@ function insertFakeWorkouts() {
 
   console.log("Falešné workouty byly úspěšně přidány do localStorage.");
 }
-
