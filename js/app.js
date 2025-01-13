@@ -6,8 +6,10 @@ import {getButton, getInput, getDiv, getP} from "./modules/ui.js";
 function getDate() {
   let day = currentDate.getDate();
   let month = currentDate.getMonth() + 1;
-  let year = currentDate.getFullYear()
-  let date = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
+  let year = currentDate.getFullYear();
+  day = day < 10 ? '0' + day : day;
+  month = month < 10 ? '0' + month : month;
+  let date = `${year}-${month}-${day}`;
   return date;
 }
 
@@ -27,7 +29,7 @@ document.getElementById('add-set').addEventListener('click', function () {
       const sets = [];
       let hasError = false; // Flag pro kontrolu chyby
 
-      // Iterujeme přes všechny existující prvky s ID začínajícími na "reps"
+      // Prochazime přes všechny existující prvky s ID začínajícími na "reps"
       const setElements = document.querySelectorAll('[id^="reps"]');
       setElements.forEach((repsInput) => {
         if (hasError) return; // Pokud už byla chyba, ukončíme další kontrolu
