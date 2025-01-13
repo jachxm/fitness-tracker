@@ -14,9 +14,7 @@ function getWorkoutHistory(){
     let workout = {date: date, session: excercise}
     if (!allWorkout.find(day => day.date === workout.date)){
     allWorkout.push(workout);
-    console.log(allWorkout);
     }
-    console.log(allWorkout)
 
   }
   allWorkout.sort((a, b) => {
