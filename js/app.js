@@ -1,4 +1,3 @@
-let setCounter = 1;
 let workout = []
 const currentDate = new Date()
 import {getButton, getInput, getDiv, getP} from "./modules/ui.js";
@@ -81,7 +80,6 @@ document.getElementById('add-set').addEventListener('click', function () {
     document.getElementById('workout-form').appendChild(addWorkoutButton);
   }
 
-  setCounter++;
 });
 
 function saveExercise(excercise) {
@@ -135,7 +133,7 @@ function saveExercise(excercise) {
 
         const repsInput = getInput('number', 'počet opakování', 'editReps' + index, '170px', set.reps)
         const weightInput = getInput('number', 'váha', 'editWeight' + index, '170px', set.weight)
-        const lineGroup = getDiv('outer-div', 'set' + setCounter)
+        const lineGroup = getDiv('outer-div', 'set')
         const deleteButton = getButton('delete-button', null, '❌')
         deleteButton.addEventListener('click', function () {
           lineGroup.remove();
@@ -215,13 +213,13 @@ function saveExercise(excercise) {
 }
 
 function createInput() {
-  const lineGroup = getDiv('outer-div', 'set' + setCounter)
+  const lineGroup = getDiv('outer-div', 'set')
 
   const inputGroup = getDiv('input-group')
 
-  const repsInput = getInput('number', 'Počet opakování', 'reps' + setCounter, '180px')
+  const repsInput = getInput('number', 'Počet opakování', 'reps' , '180px')
 
-  const weightInput = getInput('number', 'Váha', 'weight' + setCounter, '180px')
+  const weightInput = getInput('number', 'Váha', 'weight', '180px')
 
   const deleteButton = getButton('delete-button', null, '❌', 'smazat')
   deleteButton.addEventListener('click', function () {
