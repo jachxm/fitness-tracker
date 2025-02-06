@@ -15,6 +15,7 @@ function getWorkoutHistory(){
     if (!allWorkout.find(day => day.date === workout.date)){
     allWorkout.push(workout);
     }
+
   }
   allWorkout.sort((a, b) => {
     const dateA = new Date(a.date);  
@@ -138,5 +139,3 @@ function showHistory(){
         workoutList.appendChild(listItem);
   })
 
-
-}
