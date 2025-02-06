@@ -5,6 +5,11 @@ body {
   padding-top: 100px;
   background-color: #f4f4f4;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 header {
@@ -103,7 +108,7 @@ input, button {
   align-items: center;
   cursor: pointer;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid #000000;
   font-size: 1.5rem; /* Upravit velikost dle potřeby */
   font-weight: bold;
   line-height: 0.9; /* Tohle může pomoci s lepším zarovnáním */
@@ -115,7 +120,7 @@ input, button {
 .delete-button {
   width: 40px;
   height: 40px;
-  background-color: #dc3545;
+  background-color: #ffffff;
   color: #fff;
   display: flex;
   justify-content: center;
