@@ -4,7 +4,7 @@ import {getButton, getInput, getDiv, getP} from './ui.js';
 const allWorkout = [];
 
 // inicializace historie workoutů
-insertFakeWorkouts();
+//insertFakeWorkouts();
 getWorkoutHistory();
 
 function getWorkoutHistory(){
@@ -110,8 +110,8 @@ function showHistory(){
             day.session.forEach((ex) => {
               const nameSet = document.querySelectorAll(`[id^="${ex.name}editName"]`);
               nameSet.forEach((name) => {
-                const elementSet = document.querySelectorAll(`[id^="${name.value}editReps"]`);
-                const weightElements = document.querySelectorAll(`[id^="${name.value}editWeight"]`);
+                const elementSet = document.querySelectorAll(`[id^="${ex.name}editReps"]`);
+                const weightElements = document.querySelectorAll(`[id^="${ex.name}editWeight"]`);
                 const updatedSets = [];
                 elementSet.forEach((repsInput, index) => {
                   const reps = repsInput.value;
@@ -121,6 +121,7 @@ function showHistory(){
                   }
                 });
                 updatedSession.push({name: name.value, session: updatedSets});
+                console.log(updatedSession)
               });
             });
             if (updatedSession.length > 0) {
@@ -138,4 +139,75 @@ function showHistory(){
         })
         workoutList.appendChild(listItem);
   })
+};
 
+
+//vlozenych falesnych dat pro test appky
+function insertFakeWorkouts() {
+  const fakeWorkouts = [
+    {
+      date: "2025-01-07",
+      session: [
+        {
+          name: "drep",
+          session: [
+            { reps: 10, weight: 50 },
+            { reps: 12, weight: 55 }
+          ]
+        },
+        {
+          name: "bench",
+          session: [
+            { reps: 8, weight: 40 },
+            { reps: 10, weight: 45 }
+          ]
+        }
+      ]
+    },
+    {
+      date: "2025-01-08",
+      session: [
+        {
+          name: "squat",
+          session: [
+            { reps: 10, weight: 60 },
+            { reps: 8, weight: 65 }
+          ]
+        },
+        {
+          name: "deadlift",
+          session: [
+            { reps: 5, weight: 100 },
+            { reps: 5, weight: 105 }
+          ]
+        }
+      ]
+    },
+    {
+      date: "2025-01-09",
+      session: [
+        {
+          name: "pull-up",
+          session: [
+            { reps: 10, weight: 5 },
+            { reps: 8, weight: 6 }
+          ]
+        },
+        {
+          name: "push-up",
+          session: [
+            { reps: 15, weight: 7 },
+            { reps: 12, weight: 8 }
+          ]
+        }
+      ]
+    }
+  ];
+
+  // Uložení každého workoutu do localStorage
+  fakeWorkouts.forEach(workout => {
+    localStorage.setItem(workout.date, JSON.stringify(workout.session));
+  });
+
+  console.log("Falešné workouty byly úspěšně přidány do localStorage.");
+}
