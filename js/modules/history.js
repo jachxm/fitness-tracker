@@ -57,7 +57,7 @@ function showHistory(){
 
       const listItem = document.createElement('li')
         listItem.appendChild(titleDiv)
-
+        workoutList.appendChild(listItem)
         day.session.forEach((ex)=>{
           const exName = document.createElement('h4')
           exName.textContent = `${ex.name}`
@@ -121,24 +121,23 @@ function showHistory(){
                   }
                 });
                 updatedSession.push({name: name.value, session: updatedSets});
-                console.log(updatedSession)
               });
             });
             if (updatedSession.length > 0) {
               
               updatedDay = {date: day.date, session: updatedSession}
-              console.log(updatedDay)  
             }
-            console.log(updatedSession)
             localStorage.removeItem(updatedDay.date);
             localStorage.setItem(updatedDay.date, JSON.stringify(updatedDay.session));
-            console.log(localStorage.getItem(updatedDay.date))
-            location.reload();
+            while (workoutList.firstChild) {
+              workoutList.removeChild(workoutList.firstChild);
             }
+            allWorkout.length = 0;
+            getWorkoutHistory();
+          }
+        });
 
-        })
-        workoutList.appendChild(listItem);
-  })
+      })
 };
 
 
